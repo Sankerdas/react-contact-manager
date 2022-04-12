@@ -12,7 +12,13 @@ function App() {
   const [contacts, setContacts] = useState([]); // define contacts as state & use setContacts to manupulate the state
   const addContactHandler = (contact) => {
     console.log(contact)
-    setContacts([...contacts, contact]);
+    setContacts([...contacts, { id: Date.now(), ...contact}]);
+  }
+  const removeContactHandler = (id) => {
+    const newContactList = contacts.filter((contact) => {
+      return contact.id !== id;
+    });
+    setContacts(newContactList);
   }
 
   useEffect(()=> {
@@ -29,7 +35,10 @@ function App() {
     <div className="ui container">
         <Header/>
         <AddContact addContactHandler={addContactHandler} />
-        <ContactList contacts={contacts} />
+        <ContactList 
+          contacts={contacts} 
+          getContactId={removeContactHandler} // get the id to be deleted
+        />
     </div>
   );
 }
